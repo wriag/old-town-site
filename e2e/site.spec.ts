@@ -49,8 +49,8 @@ test('problem section shows tax stats and table', async ({ page }) => {
   const section = page.locator('#problem');
   await expect(section).toBeVisible();
   await expect(section.locator('text=5.6%')).toBeVisible();
-  await expect(section.locator('text=City')).toBeVisible();
-  await expect(section.locator('text=2.6%')).toBeVisible();
+  await expect(section.locator('th:has-text("Authority")')).toBeVisible();
+  await expect(section.locator('td:has-text("2.6%")')).toBeVisible();
 });
 
 test('proposal section shows what changes and what stays', async ({ page }) => {
@@ -67,6 +67,6 @@ test('why it works shows three country cards', async ({ page }) => {
   const section = page.locator('#why');
   await expect(section).toBeVisible();
   await expect(section.locator('text=Ireland')).toBeVisible();
-  await expect(section.locator('text=Nordic')).toBeVisible();
+  await expect(section.locator('h3:has-text("Nordic")')).toBeVisible();
   await expect(section.locator('text=Estonia')).toBeVisible();
 });
