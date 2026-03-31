@@ -87,3 +87,29 @@ test('FAQ: clicking closed item opens it', async ({ page }) => {
   await secondTrigger.click();
   await expect(secondTrigger).toHaveAttribute('aria-expanded', 'true');
 });
+
+test('paper section: tabs visible on desktop', async ({ page }) => {
+  await page.setViewportSize({ width: 1280, height: 800 });
+  await page.goto('/');
+  const section = page.locator('#paper');
+  await expect(section).toBeVisible();
+  await expect(section.locator('[role="tab"]:has-text("Full Paper")')).toBeVisible();
+  await expect(section.locator('[role="tab"]:has-text("Academic Abstract")')).toBeVisible();
+  await expect(section.locator('[role="tab"]:has-text("Law Review Version")')).toBeVisible();
+});
+
+test('paper section: download button always visible on mobile', async ({ page }) => {
+  await page.setViewportSize({ width: 375, height: 812 });
+  await page.goto('/');
+  const section = page.locator('#paper');
+  await expect(section.locator('a[download]').first()).toBeVisible();
+});
+
+test('paper section: tab switching works', async ({ page }) => {
+  await page.setViewportSize({ width: 1280, height: 800 });
+  await page.goto('/');
+  const section = page.locator('#paper');
+  const abstractTab = section.locator('[role="tab"]:has-text("Academic Abstract")');
+  await abstractTab.click();
+  await expect(abstractTab).toHaveAttribute('aria-selected', 'true');
+});
