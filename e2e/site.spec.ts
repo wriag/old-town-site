@@ -36,3 +36,10 @@ test('mobile nav opens and closes', async ({ page }) => {
   await page.keyboard.press('Escape');
   await expect(page.locator('button[aria-label="Open menu"]')).toBeVisible();
 });
+
+test('hero renders headline and CTAs', async ({ page }) => {
+  await page.goto('/');
+  await expect(page.locator('h1')).toContainText("Old Town Doesn't Need Another Study");
+  await expect(page.locator('a[href="#proposal"]').first()).toBeVisible();
+  await expect(page.locator('a[href="#paper"]').first()).toBeVisible();
+});
