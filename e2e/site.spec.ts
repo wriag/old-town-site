@@ -22,7 +22,7 @@ test('nav is sticky and has all section links', async ({ page }) => {
   await expect(page.locator('nav a[href="#proposal"]')).toBeVisible();
   await expect(page.locator('nav a[href="#why"]')).toBeVisible();
   await expect(page.locator('nav a[href="#faq"]')).toBeVisible();
-  await expect(page.locator('nav a[href="#paper"]')).toBeVisible();
+  await expect(page.locator('nav a[href="#paper"]').first()).toBeVisible();
   await expect(page.locator('nav a[href="#press"]')).toBeVisible();
 });
 
