@@ -5,6 +5,8 @@ import Problem from '@/components/Problem';
 import Proposal from '@/components/Proposal';
 import WhyItWorks from '@/components/WhyItWorks';
 import FAQ from '@/components/FAQ';
+import Press from '@/components/Press';
+import Footer from '@/components/Footer';
 
 const PaperReader = dynamic(() => import('@/components/PaperReader'), { ssr: false });
 
@@ -26,6 +28,8 @@ export default function Page() {
           <PaperReader />
         </div>
       </section>
+      <Press />
+      <Footer />
     </main>
   );
 }

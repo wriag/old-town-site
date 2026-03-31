@@ -113,3 +113,17 @@ test('paper section: tab switching works', async ({ page }) => {
   await abstractTab.click();
   await expect(abstractTab).toHaveAttribute('aria-selected', 'true');
 });
+
+test('press section has download buttons and contact', async ({ page }) => {
+  await page.goto('/');
+  const section = page.locator('#press');
+  await expect(section).toBeVisible();
+  await expect(section.locator('text=Media Inquiries')).toBeVisible();
+  await expect(section.locator('a[download]')).toHaveCount(2);
+});
+
+test('footer renders', async ({ page }) => {
+  await page.goto('/');
+  await expect(page.locator('footer')).toBeVisible();
+  await expect(page.locator('footer')).toContainText('Portland, Oregon');
+});
