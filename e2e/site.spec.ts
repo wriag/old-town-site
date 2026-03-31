@@ -52,3 +52,12 @@ test('problem section shows tax stats and table', async ({ page }) => {
   await expect(section.locator('text=City')).toBeVisible();
   await expect(section.locator('text=2.6%')).toBeVisible();
 });
+
+test('proposal section shows what changes and what stays', async ({ page }) => {
+  await page.goto('/');
+  const section = page.locator('#proposal');
+  await expect(section).toBeVisible();
+  await expect(section.locator('text=What Changes')).toBeVisible();
+  await expect(section.locator('text=What Stays')).toBeVisible();
+  await expect(section.locator('text=10-year commitment')).toBeVisible();
+});
