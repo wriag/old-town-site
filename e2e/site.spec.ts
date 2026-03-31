@@ -43,3 +43,12 @@ test('hero renders headline and CTAs', async ({ page }) => {
   await expect(page.locator('a[href="#proposal"]').first()).toBeVisible();
   await expect(page.locator('a[href="#paper"]').first()).toBeVisible();
 });
+
+test('problem section shows tax stats and table', async ({ page }) => {
+  await page.goto('/');
+  const section = page.locator('#problem');
+  await expect(section).toBeVisible();
+  await expect(section.locator('text=5.6%')).toBeVisible();
+  await expect(section.locator('text=City')).toBeVisible();
+  await expect(section.locator('text=2.6%')).toBeVisible();
+});
