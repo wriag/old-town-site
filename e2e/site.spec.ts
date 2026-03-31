@@ -75,14 +75,14 @@ test('FAQ: first item is open by default', async ({ page }) => {
   await page.goto('/');
   const section = page.locator('#faq');
   await expect(section).toBeVisible();
-  const firstTrigger = section.locator('button[role="button"]').first();
+  const firstTrigger = section.locator('button[aria-expanded]').first();
   await expect(firstTrigger).toHaveAttribute('aria-expanded', 'true');
 });
 
 test('FAQ: clicking closed item opens it', async ({ page }) => {
   await page.goto('/');
   const section = page.locator('#faq');
-  const secondTrigger = section.locator('button[role="button"]').nth(1);
+  const secondTrigger = section.locator('button[aria-expanded]').nth(1);
   await expect(secondTrigger).toHaveAttribute('aria-expanded', 'false');
   await secondTrigger.click();
   await expect(secondTrigger).toHaveAttribute('aria-expanded', 'true');
