@@ -17,7 +17,7 @@ const cards = [
       'Finland reducing rate to 18% in 2025',
       'Lower rates paired with strong public institutions',
     ],
-    takeaway: 'Scandinavian countries maintained social investment while reducing corporate rates, demonstrating that the trade-off between tax cuts and public services is a policy choice, not a physical law.',
+    takeaway: 'Nordic countries maintained social investment while reducing corporate rates, demonstrating that the trade-off between tax cuts and public services is a policy choice, not a physical law.',
   },
   {
     flag: '🇪🇪',

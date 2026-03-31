@@ -1,5 +1,5 @@
 const taxRows = [
-  { tax: 'City of Portland Business License Tax', rate: '2.6%', authority: 'Portland' },
+  { tax: 'City of Portland Business License Tax', rate: '2.6%', authority: 'City of Portland' },
   { tax: 'Multnomah County Business Income Tax', rate: '2.0%', authority: 'Multnomah County' },
   { tax: 'Metro Supportive Housing Services Tax', rate: '1.0%', authority: 'Metro' },
 ];
