@@ -39,7 +39,9 @@ const items = [
 export default function FAQ() {
   const [openIndex, setOpenIndex] = useState<number>(0);
   const answerRefs = useRef<(HTMLDivElement | null)[]>([]);
-  const [answerHeights, setAnswerHeights] = useState<number[]>(new Array(items.length).fill(0));
+  const [answerHeights, setAnswerHeights] = useState<(number | string)[]>(
+    new Array(items.length).fill(0).map((_, i) => (i === 0 ? 'auto' : 0))
+  );
 
   useEffect(() => {
     setAnswerHeights(answerRefs.current.map((ref) => ref?.scrollHeight ?? 0));
@@ -62,7 +64,6 @@ export default function FAQ() {
             <div key={i}
               className={`rounded-md border-l-4 bg-bg-surface ${openIndex === i ? 'border-accent' : 'border-transparent'}`}>
               <button
-                role="button"
                 aria-expanded={openIndex === i}
                 aria-controls={`faq-answer-${i}`}
                 id={`faq-question-${i}`}

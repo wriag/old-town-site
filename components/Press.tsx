@@ -41,6 +41,7 @@ export default function Press() {
           </div>
         </div>
 
+        {/* Both link to the same PDF until a separate one-pager is available */}
         <div className="flex gap-4 flex-wrap">
           <a
             href="/portland-old-town.pdf"

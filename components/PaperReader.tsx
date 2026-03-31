@@ -76,6 +76,7 @@ export default function PaperReader() {
               key={id}
               role="tab"
               id={`tab-${id}`}
+              tabIndex={activeTab === id ? 0 : -1}
               aria-selected={activeTab === id}
               aria-controls={`panel-${id}`}
               onClick={() => setActiveTab(id)}
@@ -91,35 +92,41 @@ export default function PaperReader() {
           ))}
         </div>
 
-        {/* PDF panel */}
-        <div
-          role="tabpanel"
-          id={`panel-${activeTab}`}
-          aria-labelledby={`tab-${activeTab}`}
-          ref={containerRef}
-          className="h-[700px] overflow-y-auto rounded-lg border border-border"
-        >
-          {!loadError ? (
-            <Document
-              file="/portland-old-town.pdf"
-              onLoadError={() => setLoadError(true)}
-            >
-              <Page
-                pageNumber={currentPage}
-                width={containerWidth || undefined}
-                renderTextLayer={false}
-                renderAnnotationLayer={false}
-              />
-            </Document>
-          ) : (
-            <div className="h-full flex flex-col items-center justify-center border border-accent rounded-lg p-8 text-center">
-              <p className="text-text-muted mb-4">Unable to load PDF.</p>
-              <a href="/portland-old-town.pdf" download className="text-accent underline">
-                Download instead →
-              </a>
-            </div>
-          )}
-        </div>
+        {/* Tab panels — all three always in DOM so aria-controls resolves */}
+        {tabIds.map((id) => (
+          <div
+            key={id}
+            role="tabpanel"
+            id={`panel-${id}`}
+            aria-labelledby={`tab-${id}`}
+            hidden={id !== activeTab}
+            ref={id === activeTab ? containerRef : undefined}
+            className="h-[700px] overflow-y-auto rounded-lg border border-border"
+          >
+            {id === activeTab && (
+              !loadError ? (
+                <Document
+                  file="/portland-old-town.pdf"
+                  onLoadError={() => setLoadError(true)}
+                >
+                  <Page
+                    pageNumber={currentPage}
+                    width={containerWidth || undefined}
+                    renderTextLayer={false}
+                    renderAnnotationLayer={false}
+                  />
+                </Document>
+              ) : (
+                <div className="h-full flex flex-col items-center justify-center border border-accent rounded-lg p-8 text-center">
+                  <p className="text-text-muted mb-4">Unable to load PDF.</p>
+                  <a href="/portland-old-town.pdf" download className="text-accent underline">
+                    Download instead →
+                  </a>
+                </div>
+              )
+            )}
+          </div>
+        ))}
 
         {/* Page controls */}
         <div className="flex items-center gap-4 mt-4">

@@ -1,5 +1,5 @@
 "use client";
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 
 const links = [
   { label: 'The Problem', href: '#problem' },
@@ -14,6 +14,17 @@ export default function Nav() {
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const [menuMounted, setMenuMounted] = useState(false);
+  const firstLinkRef = useRef<HTMLAnchorElement>(null);
+  const hamburgerRef = useRef<HTMLButtonElement>(null);
+
+  // Focus management
+  useEffect(() => {
+    if (menuOpen && firstLinkRef.current) {
+      firstLinkRef.current.focus();
+    } else if (!menuOpen && hamburgerRef.current) {
+      hamburgerRef.current.focus();
+    }
+  }, [menuOpen]);
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 50);
@@ -62,6 +73,7 @@ export default function Nav() {
 
           {/* Hamburger */}
           <button
+            ref={hamburgerRef}
             className="md:hidden text-text p-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-400"
             aria-label={menuOpen ? 'Close menu' : 'Open menu'}
             aria-expanded={menuOpen}
@@ -83,13 +95,17 @@ export default function Nav() {
       {/* Mobile overlay */}
       {menuMounted && (
         <div
+          role="dialog"
+          aria-modal="true"
+          aria-label="Navigation menu"
           className={`fixed inset-0 z-40 bg-[#0a0a0a] flex flex-col items-center justify-center gap-8 transition-all duration-200 ${
             menuOpen ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-2'
           }`}
           onClick={(e) => { if (e.target === e.currentTarget) closeMenu(); }}
         >
-          {links.map((link) => (
+          {links.map((link, i) => (
             <a key={link.href} href={link.href}
+              ref={i === 0 ? firstLinkRef : undefined}
               onClick={closeMenu}
               className="text-2xl font-display font-bold text-text hover:text-accent transition-colors">
               {link.label}
