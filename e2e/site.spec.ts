@@ -61,3 +61,12 @@ test('proposal section shows what changes and what stays', async ({ page }) => {
   await expect(section.locator('text=What Stays')).toBeVisible();
   await expect(section.locator('text=10-year commitment')).toBeVisible();
 });
+
+test('why it works shows three country cards', async ({ page }) => {
+  await page.goto('/');
+  const section = page.locator('#why');
+  await expect(section).toBeVisible();
+  await expect(section.locator('text=Ireland')).toBeVisible();
+  await expect(section.locator('text=Nordic')).toBeVisible();
+  await expect(section.locator('text=Estonia')).toBeVisible();
+});
