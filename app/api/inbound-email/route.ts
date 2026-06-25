@@ -3,7 +3,8 @@ import { Resend } from 'resend';
 export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
 
-const resend = new Resend(process.env.RESEND_API_KEY);
+// Instantiated per-request inside the handler (not at module load) so the build
+// never fails when RESEND_API_KEY is absent during static analysis.
 
 // Address mail is forwarded to (the inbox actually monitored). Override via env.
 const FORWARD_TO = process.env.FORWARD_TO_EMAIL ?? 'oldtownfreedist@gmail.com';
@@ -18,6 +19,7 @@ const FORWARD_FROM = 'Old Town Inbox <inbox@oldtownfreedistpdx.org>';
 // it lands in the monitored Gmail inbox. Reply-To is set to the original sender
 // so replies from Gmail go back to them.
 export async function POST(req: Request): Promise<Response> {
+  const resend = new Resend(process.env.RESEND_API_KEY);
   const payload = await req.text();
 
   let event;
