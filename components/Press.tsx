@@ -32,8 +32,8 @@ export default function Press() {
 
           <div className="bg-bg-surface border border-border rounded-lg p-6">
             <h3 className="font-display font-bold text-lg text-text mb-4">Media Inquiries</h3>
-            <a href="mailto:oldtownfreedist@gmail.com" className="text-accent underline">
-              oldtownfreedist@gmail.com
+            <a href="mailto:info@oldtownfreedistpdx.org" className="text-accent underline">
+              info@oldtownfreedistpdx.org
             </a>
             <p className="text-text-muted text-sm mt-3">
               Available for background briefings and walking tours of the district.

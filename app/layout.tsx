@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import localFont from 'next/font/local';
 import { Space_Grotesk } from 'next/font/google';
 import './globals.css';
+import { SITE_URL, SITE_NAME, SITE_DESCRIPTION, SITE_KEYWORDS } from '@/lib/site';
 
 const geist = localFont({
   src: './fonts/GeistVF.woff',
@@ -20,13 +21,42 @@ const spaceGrotesk = Space_Grotesk({
 });
 
 export const metadata: Metadata = {
-  title: 'Old Town Free Enterprise District',
-  description: "A proposal to make Portland's Old Town / Chinatown a zero local business-income-tax zone for ten years.",
+  metadataBase: new URL(SITE_URL),
+  title: {
+    default: `${SITE_NAME} — Portland Old Town / Chinatown`,
+    template: `%s — ${SITE_NAME}`,
+  },
+  description: SITE_DESCRIPTION,
+  keywords: SITE_KEYWORDS,
+  applicationName: SITE_NAME,
+  authors: [{ name: SITE_NAME }],
+  alternates: {
+    canonical: '/',
+  },
   openGraph: {
-    title: 'Old Town Free Enterprise District',
-    description: "A proposal to make Portland's Old Town / Chinatown a zero local business-income-tax zone for ten years.",
+    title: `${SITE_NAME} — Portland Old Town / Chinatown`,
+    description: SITE_DESCRIPTION,
+    url: SITE_URL,
+    siteName: SITE_NAME,
+    locale: 'en_US',
     type: 'website',
   },
+  twitter: {
+    card: 'summary_large_image',
+    title: `${SITE_NAME} — Portland Old Town / Chinatown`,
+    description: SITE_DESCRIPTION,
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      'max-image-preview': 'large',
+      'max-snippet': -1,
+    },
+  },
+  category: 'Public Policy',
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {

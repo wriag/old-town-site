@@ -1,4 +1,5 @@
 import dynamic from 'next/dynamic';
+import StructuredData from '@/components/StructuredData';
 import Nav from '@/components/Nav';
 import Hero from '@/components/Hero';
 import Problem from '@/components/Problem';
@@ -13,6 +14,7 @@ const PaperReader = dynamic(() => import('@/components/PaperReader'), { ssr: fal
 export default function Page() {
   return (
     <main>
+      <StructuredData />
       <Nav />
       <Hero />
       <Problem />

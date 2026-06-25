@@ -2,7 +2,7 @@ import { test, expect } from '@playwright/test';
 
 test('page has correct title', async ({ page }) => {
   await page.goto('/');
-  await expect(page).toHaveTitle('Old Town Free Enterprise District');
+  await expect(page).toHaveTitle(/Old Town Free Enterprise District/);
 });
 
 test('page has dark background', async ({ page }) => {
@@ -120,6 +120,51 @@ test('press section has download buttons and contact', async ({ page }) => {
   await expect(section).toBeVisible();
   await expect(section.locator('text=Media Inquiries')).toBeVisible();
   await expect(section.locator('a[download]')).toHaveCount(2);
+});
+
+test('contact email uses the new domain', async ({ page }) => {
+  await page.goto('/');
+  await expect(
+    page.locator('a[href="mailto:info@oldtownfreedistpdx.org"]')
+  ).toBeVisible();
+});
+
+test('SEO: canonical, OG image, and JSON-LD structured data present', async ({ page }) => {
+  await page.goto('/');
+  await expect(page.locator('link[rel="canonical"]')).toHaveAttribute(
+    'href',
+    'https://oldtownfreedistpdx.org'
+  );
+  await expect(page.locator('meta[property="og:image"]')).toHaveCount(1);
+
+  const ldTypes = await page
+    .locator('script[type="application/ld+json"]')
+    .first()
+    .textContent();
+  expect(ldTypes).toContain('"FAQPage"');
+  expect(ldTypes).toContain('"Organization"');
+  expect(ldTypes).toContain('"Article"');
+});
+
+test('SEO routes: robots, sitemap, and llms.txt are served', async ({ request }) => {
+  const robots = await request.get('/robots.txt');
+  expect(robots.ok()).toBeTruthy();
+  expect(await robots.text()).toContain('GPTBot');
+
+  const sitemap = await request.get('/sitemap.xml');
+  expect(sitemap.ok()).toBeTruthy();
+  expect(await sitemap.text()).toContain('oldtownfreedistpdx.org');
+
+  const llms = await request.get('/llms.txt');
+  expect(llms.ok()).toBeTruthy();
+  expect(await llms.text()).toContain('Old Town Free Enterprise District');
+});
+
+test('inbound-email webhook rejects unsigned requests', async ({ request }) => {
+  const res = await request.post('/api/inbound-email', {
+    data: { type: 'email.received' },
+  });
+  expect(res.status()).toBe(400);
 });
 
 test('footer renders', async ({ page }) => {
