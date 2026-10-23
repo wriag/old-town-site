@@ -1,4 +1,3 @@
-import dynamic from 'next/dynamic';
 import StructuredData from '@/components/StructuredData';
 import Nav from '@/components/Nav';
 import Hero from '@/components/Hero';
@@ -8,8 +7,7 @@ import WhyItWorks from '@/components/WhyItWorks';
 import FAQ from '@/components/FAQ';
 import Press from '@/components/Press';
 import Footer from '@/components/Footer';
-
-const PaperReader = dynamic(() => import('@/components/PaperReader'), { ssr: false });
+import PaperReader from '@/components/PaperReaderClient';
 
 export default function Page() {
   return (
