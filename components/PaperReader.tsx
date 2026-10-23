@@ -2,7 +2,25 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { Document, Page, pdfjs } from 'react-pdf';
 
-pdfjs.GlobalWorkerOptions.workerSrc = '/pdf.worker.min.js';
+// Bundle the worker that ships with the installed pdfjs-dist, so the worker
+// version always matches the API version (no copied/committed worker file).
+// Must be set in the same module that renders <Document>/<Page>.
+// The *legacy* worker build is used on purpose: the modern pdfjs 6 worker
+// calls Math.sumPrecise unpolyfilled, which current Chromium (e.g. 145) lacks,
+// so embedded-font conversion fails and falls back to system fonts. The legacy
+// build is the same pdfjs version (same security fixes) with polyfills.
+pdfjs.GlobalWorkerOptions.workerSrc = new URL(
+  'pdfjs-dist/legacy/build/pdf.worker.min.mjs',
+  import.meta.url,
+).toString();
+
+// Hardening notes (pdfjs-dist 6.x):
+// - `isEvalSupported` no longer exists: PDF.js removed the eval/new Function
+//   font-compilation path that CVE-2024-4367 abused, so there is nothing to
+//   disable. The option is not accepted by DocumentInitParameters anymore.
+// - `enableScripting` is a pdf.js *viewer* option; the core API used by
+//   react-pdf never runs PDF JavaScript, and the annotation layer (where
+//   forms/links live) is not rendered here.
 
 const TAB_RANGES = {
   paper:     { start: 2,  end: 14, label: 'Full Paper' },
@@ -107,6 +125,10 @@ export default function PaperReader() {
               !loadError ? (
                 <Document
                   file="/portland-old-town.pdf"
+                  // react-pdf 11 suspends and throws to an Error Boundary by
+                  // default; opt out so onLoadError keeps driving the
+                  // download fallback below. Children inherit this.
+                  suspense={false}
                   onLoadError={() => setLoadError(true)}
                 >
                   <Page
